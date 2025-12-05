@@ -1,6 +1,6 @@
 # Guia de Contribuição
 
-Bem-vindo ao TickTask! 🎉 Estamos felizes que você queira contribuir para este projeto. Este documento contém informações importantes sobre como contribuir de forma efetiva.
+Bem-vindo ao i18n-editor! 🎉 Estamos felizes que você queira contribuir para este projeto. Este documento contém informações importantes sobre como contribuir de forma efetiva.
 
 ## 📋 Como Contribuir
 
@@ -16,8 +16,8 @@ Antes de começar, certifique-se de ter instalado:
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/ticktask.git
-cd ticktask
+git clone https://github.com/seu-usuario/i18n-editor.git
+cd i18n-editor
 
 # Instale as dependências
 npm install
@@ -52,7 +52,7 @@ Para sugestões de novas funcionalidades:
 Para contribuir com código:
 
 1. **Fork** o projeto
-2. **Clone** seu fork: `git clone https://github.com/SEU_USERNAME/ticktask.git`
+2. **Clone** seu fork: `git clone https://github.com/SEU_USERNAME/i18n-editor.git`
 3. **Crie uma branch** para sua feature: `git checkout -b feature/nome-da-feature`
 4. **Faça suas alterações**
 5. **Teste suas alterações**
@@ -198,4 +198,4 @@ Ao contribuir, você concorda que suas contribuições serão licenciadas sob a 
 
 ---
 
-Obrigado por contribuir com o TickTask! 🚀
+Obrigado por contribuir com o i18n-editor! 🚀

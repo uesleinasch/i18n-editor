@@ -15,7 +15,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Versão do TickTask
+      label: Versão do i18n-editor
       description: Qual versão você está usando?
       placeholder: "ex: v2.0.1"
     validations:

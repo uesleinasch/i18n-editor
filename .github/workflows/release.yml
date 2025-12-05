@@ -1,4 +1,4 @@
-name: Release TickTask App
+name: Release i18n-editor App
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ticktask-${{ matrix.os }}
+          name: i18n-editor-${{ matrix.os }}
           path: dist/
 
   release:
@@ -50,20 +50,20 @@ jobs:
       - name: Download Windows artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ticktask-windows-latest
+          name: i18n-editor-windows-latest
           path: dist/win
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ticktask-ubuntu-latest
+          name: i18n-editor-ubuntu-latest
           path: dist/linux
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          name: 🚀 TickTask ${{ github.ref_name }}
+          name: 🚀 i18n-editor ${{ github.ref_name }}
           draft: false
           prerelease: false
           files: |
