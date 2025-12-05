@@ -1,6 +1,6 @@
 # i18n Editor
 
-Editor visual para gerenciamento e revisão de arquivos de tradução i18n do JactoConnect.
+Editor visual para gerenciamento e revisão de arquivos de tradução i18n.
 
 ## Instalação
 
@@ -20,7 +20,7 @@ Acesse: http://localhost:3333
 ## Funcionalidades
 
 ### 📂 Carregamento de Arquivos
-- **Diretório Padrão**: Carrega arquivos do projeto JactoConnect automaticamente
+- **Diretório Padrão**: Carrega arquivos automaticamente
 - **Diretório Personalizado**: Especifique qualquer diretório contendo arquivos JSON de tradução
 - **Upload de Arquivos**: Faça upload de arquivos JSON para revisão temporária (drag & drop suportado)
 - **Estatísticas**: Visualize métricas de completude por idioma

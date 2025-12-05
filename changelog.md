@@ -35,15 +35,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Arquitetura refatorada para ser orientada a projetos
 - Fluxo de trabalho agora inicia com seleção/criação de projeto
-- Interface genérica, removidas referências específicas ao JactoConnect
 - Abas de Editor, Revisão e Comparação agora dependem de projeto ativo
 - Auto-detecção de locales substituiu lista hardcoded
 
 ### Removed
 - Carregamento direto de diretório sem projeto
-- Dependência de estrutura específica do JactoConnect
 
-## [1.1.0] - 2025-12-04
+## [1.1.0] - 2023-12-22
 
 ### Added
 - Sistema de upload de arquivos JSON de tradução
@@ -59,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interface reorganizada em abas funcionais
 - Melhorias visuais nos cards de tradução
 
-## [1.0.0] - 2025-12-04
+## [1.0.0] - 2023-12-08
 
 ### Added
 - Editor de traduções i18n básico
