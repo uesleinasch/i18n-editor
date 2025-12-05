@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i18n Editor</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <h1>🌐 i18n Editor</h1>
+      <p class="subtitle">Editor de Traduções</p>
+      <div id="current-project" class="current-project"></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="projects">📂 Projetos</button>
+    <button class="tab" data-tab="editor" disabled id="editor-tab-btn">✏️ Editor</button>
+    <button class="tab" data-tab="review" disabled id="review-tab-btn">🔍 Revisão</button>
+    <button class="tab" data-tab="compare" disabled id="compare-tab-btn">⚖️ Comparar</button>
+  </nav>
+
+  <main class="container">
+    <section id="projects-tab" class="tab-content active">
+      <div class="projects-panel">
+        <div class="projects-header">
+          <h2>📁 Projetos de Tradução</h2>
+          <button id="new-project-btn" class="btn btn-primary">+ Novo Projeto</button>
+        </div>
+        
+        <div id="projects-list" class="projects-list">
+          <div class="no-projects">
+            <span>📭</span>
+            <p>Nenhum projeto criado</p>
+            <p class="hint">Crie um projeto para começar a gerenciar suas traduções</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="editor-tab" class="tab-content">
+      <div class="controls">
+        <div class="locale-selector">
+          <label for="locale-select">Idioma:</label>
+          <select id="locale-select"></select>
+        </div>
+        
+        <div class="filter-selector">
+          <label for="filter-mode">Filtrar:</label>
+          <select id="filter-mode">
+            <option value="all">Todas</option>
+            <option value="issues">Com Problemas</option>
+            <option value="empty">Vazias</option>
+            <option value="pending">Pendentes de Revisão</option>
+            <option value="reviewed">Revisadas</option>
+          </select>
+        </div>
+        
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Buscar por chave ou valor...">
+          <button id="search-btn" class="btn btn-secondary">Buscar</button>
+          <button id="clear-btn" class="btn btn-outline">Limpar</button>
+        </div>
+
+        <div class="actions">
+          <button id="export-btn" class="btn btn-primary">📥 Exportar JSON</button>
+          <span id="stats" class="stats"></span>
+        </div>
+      </div>
+
+      <div id="review-progress" class="review-progress" style="display: none;">
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <span id="progress-text" class="progress-text"></span>
+      </div>
+
+      <div class="pagination-top">
+        <button id="prev-page" class="btn btn-outline" disabled>← Anterior</button>
+        <span id="page-info"></span>
+        <button id="next-page" class="btn btn-outline">Próximo →</button>
+      </div>
+
+      <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Carregando traduções...</p>
+      </div>
+
+      <div id="translations-list" class="translations-list"></div>
+
+      <div class="pagination-bottom">
+        <button id="prev-page-bottom" class="btn btn-outline" disabled>← Anterior</button>
+        <span id="page-info-bottom"></span>
+        <button id="next-page-bottom" class="btn btn-outline">Próximo →</button>
+      </div>
+    </section>
+
+    <section id="review-tab" class="tab-content">
+      <div class="review-panel">
+        <h2>🔍 Painel de Revisão</h2>
+        <p>Identifique e corrija problemas nas traduções de forma eficiente.</p>
+        
+        <div class="controls">
+          <button id="load-issues" class="btn btn-primary">Carregar Problemas</button>
+          <div class="issue-filters">
+            <label><input type="checkbox" id="filter-empty" checked> Vazias</label>
+            <label><input type="checkbox" id="filter-untranslated" checked> Não Traduzidas</label>
+            <label><input type="checkbox" id="filter-placeholders" checked> Placeholders</label>
+            <label><input type="checkbox" id="filter-long" checked> Muito Longas</label>
+          </div>
+        </div>
+        
+        <div id="issues-loading" class="loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Analisando traduções...</p>
+        </div>
+        
+        <div id="issues-summary" class="issues-summary" style="display: none;"></div>
+        <div id="issues-list" class="issues-list"></div>
+      </div>
+    </section>
+
+    <section id="compare-tab" class="tab-content">
+      <div class="controls">
+        <div class="filter-options">
+          <label>
+            <input type="checkbox" id="show-missing-only"> Mostrar apenas chaves faltantes
+          </label>
+        </div>
+        <button id="load-compare" class="btn btn-primary">Carregar Comparação</button>
+      </div>
+      
+      <div id="compare-loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Comparando idiomas...</p>
+      </div>
+
+      <div id="compare-list" class="compare-list"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="project-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="project-modal-title">Novo Projeto</h3>
+        <button class="modal-close" id="close-project-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="project-name">Nome do Projeto *</label>
+          <input type="text" id="project-name" placeholder="Ex: Meu App Mobile">
+        </div>
+        <div class="form-group">
+          <label for="project-description">Descrição</label>
+          <input type="text" id="project-description" placeholder="Descrição opcional">
+        </div>
+        <div class="form-group">
+          <label>Origem dos Arquivos *</label>
+          <div class="source-cards">
+            <div class="source-card selected" data-value="directory">
+              <input type="radio" name="source-type" value="directory" checked hidden>
+              <div class="source-card-icon">
+                <div class="icon-circle">📁</div>
+              </div>
+              <div class="source-card-content">
+                <h4>Diretório Local</h4>
+                <p>Conecte a uma pasta existente no sistema de arquivos</p>
+              </div>
+              <ul class="source-features">
+                <li>✓ Sincronização automática</li>
+                <li>✓ Edição em tempo real</li>
+                <li>✓ Backup automático</li>
+              </ul>
+              <div class="source-card-check">✓</div>
+            </div>
+            
+            <div class="source-card" data-value="upload">
+              <input type="radio" name="source-type" value="upload" hidden>
+              <div class="source-card-icon">
+                <div class="icon-circle">📤</div>
+              </div>
+              <div class="source-card-content">
+                <h4>Upload de Arquivos</h4>
+                <p>Envie arquivos JSON manualmente para o projeto</p>
+              </div>
+              <ul class="source-features">
+                <li>✓ Sem necessidade de caminho</li>
+                <li>✓ Arraste e solte</li>
+                <li>✓ Múltiplos arquivos</li>
+              </ul>
+              <div class="source-card-check">✓</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" id="path-group">
+          <label for="project-path">Caminho do Diretório *</label>
+          <input type="text" id="project-path" placeholder="/caminho/para/arquivos/i18n">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-project" class="btn btn-outline">Cancelar</button>
+        <button id="save-project" class="btn btn-primary">Criar Projeto</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="upload-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Upload de Arquivos</h3>
+        <button class="modal-close" id="close-upload-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-area" id="upload-area">
+          <input type="file" id="file-upload" multiple accept=".json" hidden>
+          <div class="upload-content">
+            <span class="upload-icon">📄</span>
+            <p>Arraste arquivos JSON aqui ou <label for="file-upload" class="upload-link">clique para selecionar</label></p>
+          </div>
+        </div>
+        <div id="upload-preview" class="upload-preview"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-upload" class="btn btn-outline">Cancelar</button>
+        <button id="confirm-upload" class="btn btn-primary" disabled>Enviar Arquivos</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Tradução</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Chave (somente leitura):</label>
+          <input type="text" id="edit-key" readonly class="input-readonly">
+        </div>
+        <div id="edit-issues" class="edit-issues"></div>
+        <div class="form-group">
+          <label>Valor:</label>
+          <textarea id="edit-value" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="mark-reviewed"> Marcar como revisado
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-edit" class="btn btn-outline">Cancelar</button>
+        <button id="save-edit" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirm-modal" class="modal" style="display: none;">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h3>Confirmar</h3>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message"></p>
+      </div>
+      <div class="modal-footer">
+        <button id="confirm-no" class="btn btn-outline">Cancelar</button>
+        <button id="confirm-yes" class="btn btn-danger">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="global-loading" class="global-loading-overlay" style="display: none;">
+    <div class="global-loading-content">
+      <div class="loading-spinner"></div>
+      <p id="loading-message">Carregando...</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
